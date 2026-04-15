@@ -1,5 +1,10 @@
 (function () {
-  var siteRoot = '/';
+  function getBasePath() {
+    var path = window.location.pathname || '';
+    return path.indexOf('/pages/') !== -1 ? '../' : './';
+  }
+
+  var siteRoot = getBasePath();
 
   function ensureFooterStylesheet() {
     var existingLink = document.querySelector('link[data-shared-footer-css="true"]');
@@ -20,10 +25,10 @@
       return;
     }
 
-    fetch(siteRoot + 'footer.html')
+    fetch(siteRoot + 'components/footer.html')
       .then(function (response) {
         if (!response.ok) {
-          throw new Error('No se pudo cargar footer.html: ' + response.status);
+          throw new Error('No se pudo cargar components/footer.html: ' + response.status);
         }
         return response.text();
       })
