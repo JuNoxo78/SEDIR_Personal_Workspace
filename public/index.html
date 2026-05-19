@@ -233,9 +233,11 @@
   <nav class="bg-white sticky top-0 z-50 shadow-sm border-b border-primary-dark">
     <div class="w-full px-[40px] flex justify-between items-center">
       <div class="flex items-center">
-        <img alt="SEDIR Logo" src="activos/img_logos/logo-msi.png" style="height:84px; width:auto; object-fit:contain;" />
+        <img alt="SEDIR Logo" src="activos/img_logos/logo-msi.png"
+          style="height:84px; width:auto; object-fit:contain;" />
       </div>
-      <div class="hidden md:flex items-center" style="gap:35px;">
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center flex-nowrap gap-5">
         <a class="text-primary font-display font-medium text-[16px]" href="#">Inicio</a>
         <a class="text-gray-600 hover:text-primary font-display font-medium text-[16px] transition-colors"
           href="#">Quienes somos</a>
@@ -250,8 +252,45 @@
         <a class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-full font-display font-medium text-[16px] transition-colors"
           href="#">Contáctanos</a>
       </div>
+      <!-- Mobile Button -->
+      <button id="menu-btn" class="md:hidden text-primary" type="button" aria-label="Abrir menú">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
     </div>
   </nav>
+  <!-- Mobile Drawer -->
+  <div id="mobile-menu"
+    class="fixed top-0 right-[-100%] w-[280px] h-full bg-white shadow-2xl z-[999] transition-all duration-300 ease-in-out md:hidden">
+
+    <div class="flex justify-between items-center p-6 border-b">
+      <img src="activos/img_logos/logo-msi.png" class="h-10" alt="SEDIR Logo" />
+
+      <button id="close-menu" class="text-gray-700" type="button" aria-label="Cerrar menú">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+    </div>
+
+    <div class="flex flex-col p-6 gap-5 font-medium text-gray-700">
+
+      <a href="#" class="hover:text-primary">Inicio</a>
+      <a href="#" class="hover:text-primary">Quiénes Somos</a>
+      <a href="#" class="hover:text-primary">Qué hacemos</a>
+      <a href="#" class="hover:text-primary">Proyectos</a>
+      <a href="#" class="hover:text-primary">Noticias</a>
+      <a href="#" class="hover:text-primary">Productos y Servicios</a>
+
+      <a href="#" class="bg-primary text-white text-center py-3 rounded-full mt-4">
+        Contáctanos
+      </a>
+
+    </div>
+  </div>
+  <div id="overlay" class="fixed inset-0 bg-black/40 hidden z-[998] md:hidden"></div>
   <!-- END: Navigation -->
   <!-- BEGIN: Hero Section -->
   <section class="hero-bg text-white py-12 lg:py-20 relative overflow-hidden">
@@ -266,7 +305,7 @@
     <div
       class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
       <div>
-        <h1 class="font-extrabold leading-tight mb-6 text-[68px]">
+        <h1 class="font-extrabold leading-tight mb-6 text-[58px]">
           Impulsamos el desarrollo rural <span class="text-[#F09734]">sostenible</span>
         </h1>
         <p class="text-lg lg:text-xl mb-8 text-gray-100 max-w-lg font-display font-light">
@@ -989,10 +1028,12 @@
                 id="message" placeholder="Escribe tu mensaje aquí..." rows="4"></textarea>
             </div>
             <div class="mt-4 text-center">
-              <button type="submit" class="inline-flex items-center gap-2 bg-[#00944A] hover:bg-[#007a3d] text-white px-5 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg">
+              <button type="submit"
+                class="inline-flex items-center gap-2 bg-[#00944A] hover:bg-[#007a3d] text-white px-5 py-3 rounded-full font-semibold transition-all duration-300 shadow-lg">
                 Enviar mensaje
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewbox="0 0 24 24">
-                  <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path>
+                  <path d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" stroke-linecap="round" stroke-linejoin="round"
+                    stroke-width="2"></path>
                 </svg>
               </button>
             </div>
@@ -1016,8 +1057,7 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
       <!-- Brand & Social -->
       <div>
-        <img alt="SEDIR Logo Blanco" class="h-10 mb-6"
-          src="activos/img_logos/logo-msi.png" />
+        <img alt="SEDIR Logo Blanco" class="h-10 mb-6" src="activos/img_logos/logo-msi.png" />
         <p class="text-sm mb-6 leading-relaxed">
           Impulsamos el desarrollo agropecuario y agroindustrial sostenible en el Valle de Nepeña desde 2012,
           beneficiando a más de 4,000 familias rurales de Áncash.
@@ -1089,6 +1129,26 @@
     </div>
   </footer>
   <!-- END: Footer -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const closeBtn = document.getElementById('close-menu');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const overlay = document.getElementById('overlay');
+
+    const openMenu = () => {
+      mobileMenu.style.right = '0';
+      overlay.classList.remove('hidden');
+    };
+
+    const closeMenu = () => {
+      mobileMenu.style.right = '-100%';
+      overlay.classList.add('hidden');
+    };
+
+    menuBtn.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', closeMenu);
+    overlay.addEventListener('click', closeMenu);
+  </script>
 </body>
 
 </html>
