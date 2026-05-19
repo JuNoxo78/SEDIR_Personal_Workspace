@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport" />
+    <title>SEDIR - Últimas Noticias</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&amp;family=Open+Sans:wght@400;600&amp;display=swap"
+        rel="stylesheet" />
+    <style data-purpose="custom-fonts">
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        .font-montserrat {
+            font-family: 'Montserrat', sans-serif;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'sedir-green': '#00944a',
+                        'sedir-dark-green': '#006a49',
+                        'sedir-orange': '#f09734',
+                        'sedir-gray': '#4a5568',
+                        'sedir-light-gray': '#f7fafc',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-white text-gray-800">
+      <!-- BEGIN: Navigation -->
+  <nav class="bg-white sticky top-0 z-50 shadow-sm border-b border-primary-dark">
+    <div class="w-full px-[40px] flex justify-between items-center">
+      <div class="flex items-center">
+        <img alt="SEDIR Logo" src="activos/img_logos/logo-msi.png" style="height:84px; width:auto; object-fit:contain;" />
+      </div>
+      <!-- Desktop Menu -->
+      <div class="hidden md:flex items-center flex-nowrap gap-5">
+        <a class="text-primary font-display font-medium text-[16px]" href="#">Inicio</a>
+        <a class="text-gray-600 hover:text-primary font-display font-medium text-[16px] transition-colors"
+          href="#">Quienes somos</a>
+        <a class="text-gray-600 hover:text-primary font-display font-medium text-[16px] transition-colors" href="#">Qué
+          hacemos</a>
+        <a class="text-gray-600 hover:text-primary font-display font-medium text-[16px] transition-colors"
+          href="#">Proyectos</a>
+        <a class="text-gray-600 hover:text-primary font-display font-medium text-[16px] transition-colors"
+          href="paginas/noticia.html">Noticias</a>
+        <a class="text-gray-600 hover:text-primary font-display font-medium text-[16px] transition-colors"
+          href="#">Productos y Servicios</a>
+        <a class="bg-primary hover:bg-primary-dark text-white px-6 py-2 rounded-full font-display font-medium text-[16px] transition-colors"
+          href="#">Contáctanos</a>
+      </div>
+      <!-- Mobile Button -->
+      <button id="menu-btn" class="md:hidden text-primary" type="button" aria-label="Abrir menú">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+    </div>
+  </nav>
+  <!-- Mobile Drawer -->
+  <div id="mobile-menu"
+    class="fixed top-0 right-[-100%] w-[280px] h-full bg-white shadow-2xl z-[999] transition-all duration-300 ease-in-out md:hidden">
+
+    <div class="flex justify-between items-center p-6 border-b">
+      <img src="activos/img_logos/logo-msi.png" class="h-10" alt="SEDIR Logo" />
+
+      <button id="close-menu" class="text-gray-700" type="button" aria-label="Cerrar menú">
+        <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+
+    </div>
+
+      <div class="flex flex-col p-6 gap-5 font-medium text-gray-700">
+
+      <a href="C:\Users\gadie\OneDrive\Documentos\GitHub\sedir-web-2026\public\index.html" class="hover:text-primary">Inicio</a>
+      <a href="paginas/quienes.html" class="hover:text-primary">Quiénes Somos</a>
+      <a href="paginas/que-hacemos.html" class="hover:text-primary">Qué hacemos</a>
+      <a href="paginas/proyectos.html" class="hover:text-primary">Proyectos</a>
+      <a href="paginas/noticia.html" class="hover:text-primary">Noticias</a>
+      <a href="paginas/productos.html" class="hover:text-primary">Productos y Servicios</a>
+
+      <a href="paginas/contacto.html"
+        class="bg-primary text-white text-center py-3 rounded-full mt-4">
+        Contáctanos
+      </a>
+
+    </div>
+  </div>
+  <div id="overlay" class="fixed inset-0 bg-black/40 hidden z-[998] md:hidden"></div>
+  <!-- END: Navigation -->
+    <!-- BEGIN: Hero Banner -->
+    <section class="relative bg-sedir-dark-green py-24 md:py-32 overflow-hidden">
+        <!-- Background Image with Overlay -->
+        <div class="absolute inset-0 z-0">
+            <img alt="Agricultural Background" class="w-full h-full object-cover opacity-30 mix-blend-multiply"
+                src="https://lh3.googleusercontent.com/aida-public/AB6AXuDhc9RM0cENye_eltnDNp_XhMKSXBCHEHg84FiLdVo2k1O8lCyTVmc_sgYQt0CEd2WtQZMy6dMjtgC92Of-0ppxt06dwUrqCEiUwL4CI2S4WS6wasO4IQ49Izpv1-tkTP7ijq4q9R2RHnKCOfvnltqKxvl8RZKMgVYGtp65sj0mwRA7WamTUXOYIjGzjd776YWhqvn_e9r5Gl4YjEIDVgn80FvCRpL4Df8s9oGotKMR7CcVhcvcOsXsESfmpfS-2lmoqEoelvMF4Ru0" />
+        </div>
+        <div class="container mx-auto px-4 relative z-10 max-w-7xl">
+            <div class="max-w-3xl">
+                <h1 class="text-5xl md:text-6xl font-montserrat font-bold text-white mb-4 leading-tight">
+                    Ultimas <span class="text-sedir-orange">Noticias</span>
+                </h1>
+                <p class="text-lg md:text-xl text-white/90 font-light">
+                    Entérate de nuestros avances, proyectos y logros en el Valle de Nepeña, Áncash.
+                </p>
+            </div>
+        </div>
+    </section>
+    <!-- END: Hero Banner -->
+    <!-- BEGIN: Main Content -->
+    <main class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- BEGIN: Filter Bar -->
+        <div class="flex flex-col sm:flex-row items-center gap-4 border-b border-gray-200 pb-6 mb-8">
+            <span class="text-gray-600 font-semibold font-montserrat">Filtrar por:</span>
+            <div class="flex flex-wrap gap-2">
+                <button
+                    class="bg-sedir-green text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-sedir-dark-green transition-colors">Todos</button>
+                <button
+                    class="bg-white border border-gray-300 text-gray-600 px-4 py-1.5 rounded-full text-sm font-semibold hover:border-sedir-green hover:text-sedir-green transition-colors">Agricultura</button>
+                <button
+                    class="bg-white border border-gray-300 text-gray-600 px-4 py-1.5 rounded-full text-sm font-semibold hover:border-sedir-green hover:text-sedir-green transition-colors">Apicultura</button>
+                <button
+                    class="bg-white border border-gray-300 text-gray-600 px-4 py-1.5 rounded-full text-sm font-semibold hover:border-sedir-green hover:text-sedir-green transition-colors">Capacitación</button>
+                <button
+                    class="bg-white border border-gray-300 text-gray-600 px-4 py-1.5 rounded-full text-sm font-semibold hover:border-sedir-green hover:text-sedir-green transition-colors">Comunidad</button>
+            </div>
+        </div>
+        <!-- END: Filter Bar -->
+        <!-- BEGIN: News Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Featured Card (Spans 2 columns on larger screens) -->
+            <article
+                class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col md:col-span-2 relative group cursor-pointer border-dashed border-2 border-blue-400">
+                <div class="absolute top-4 left-4 z-10">
+                    <span
+                        class="bg-sedir-orange text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-sm font-montserrat">Apicultura</span>
+                </div>
+                <img alt="Beekeepers"
+                    class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYadQ47bGTEfrIIbjCoQyRiqa0x2QmXIeSf5du3tywrvpZhOXHanwQS4GPgMQwKCRiSN587XFZCGq_pnwf_2RVJjEUCL9lg7h_I3FST0pvCxC_V-AzKEzR3bqZxlAGgoPar-J9XvE_OF6L7VLG4L9-090RG0ZxmO5iT5me2ftQGAQUAUZ_uumdzbphhNy8qWrvTicA84Ob9oZquUvDz_8yt55c4QXPZ5XCQzqlfalgN1sGVY0blnBSOf32m3wRofMFR6Az9enG4qbb" />
+                <div class="p-6 flex-grow flex flex-col">
+                    <span class="text-xs text-gray-500 mb-2 block font-montserrat font-semibold">15 Abril 2025</span>
+                    <h2
+                        class="text-xl font-bold font-montserrat text-gray-900 mb-3 group-hover:text-sedir-green transition-colors">
+                        Más de 200 apicultores del valle reciben capacitación técnica en manejo de colmenas</h2>
+                    <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">En el marco del proyecto PROAPICOLA,
+                        familias productoras de los distritos de Moro, Cáceres del Perú y Nepeña participaron en
+                        talleres intensivos sobre manejo sanitario, cosecha de miel y fortalecimiento de capacidades
+                        organizacionales para mejorar su competitividad en el mercado regional.</p>
+                    <div class="mt-auto border-t border-gray-100 pt-4">
+                        <a class="text-sedir-green font-semibold text-sm flex items-center gap-1 hover:text-sedir-dark-green transition-colors group-hover:gap-2"
+                            href="#">
+                            Leer más
+                            <svg class="w-4 h-4 transition-all" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            <!-- Standard Card 1 -->
+            <article
+                class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col relative group cursor-pointer border-dashed border-2 border-blue-400">
+                <div class="absolute top-4 left-4 z-10">
+                    <span
+                        class="bg-sedir-orange text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-sm font-montserrat">Agricultura</span>
+                </div>
+                <img alt="Irrigation techniques"
+                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZ25qtx8tiIMbU6XzphLZNtVU4cpkl6rhxdEqHvue26l6H3J8CNLWroG1VMEy44D8MLwZ6sCNnKwNtEPoikw_0YK3EDEsS5fXlCJaes3LrO5ANg38LPxyoCM8p5aHPUMw8D1EFiC-c3vJHNrflYfuKlMgbd6a8LB553-EB8ZKuOJwLul-fgLwlp1-mHfv4X4eJ74kEEDfhp23Lcw7vRXkIDb5r7e6Uxv-VzBjmeg1nFDjBpg1JpOat63vwgKizF-kv1wrFfsCQpmmZ" />
+                <div class="p-6 flex-grow flex flex-col">
+                    <span class="text-xs text-gray-500 mb-2 block font-montserrat font-semibold">28 Marzo 2025</span>
+                    <h3
+                        class="text-lg font-bold font-montserrat text-gray-900 mb-3 group-hover:text-sedir-green transition-colors line-clamp-2">
+                        Agricultores del valle adoptan técnicas de riego tecnificado</h3>
+                    <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">Con el apoyo de SEDIR, 350 familias
+                        implementaron sistemas de riego por goteo que reducen el consumo de agua hasta en un 40%,
+                        mejorando la productividad de sus cultivos de maíz y frutales.</p>
+                    <div class="mt-auto border-t border-gray-100 pt-4">
+                        <a class="text-sedir-green font-semibold text-sm flex items-center gap-1 hover:text-sedir-dark-green transition-colors group-hover:gap-2"
+                            href="#">
+                            Leer más
+                            <svg class="w-4 h-4 transition-all" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            <!-- Standard Card 2 -->
+            <article
+                class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col relative group cursor-pointer border-dashed border-2 border-blue-400">
+                <div class="absolute top-4 left-4 z-10">
+                    <span
+                        class="bg-sedir-orange text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-sm font-montserrat">Capacitación</span>
+                </div>
+                <img alt="Community Workshop"
+                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuAlc3-6vcLucsaufQFuI0QNjf8y31AvIx4-bek_ZUW47WpBPF5wJpQYPx8lTsBYQQACvsAUfgPGiAidhtaOceEtk5-pbxCsXg5oCWrisQh9obPWFL4c5MHXZw1kpAbht_k2l6KzN7nZomD7ufDL_TyIHqyxYyWHfVKGwH34D7O5x_n2U0TTb1tq8t3XHHT_oxx0ov6vp_2xoCARCT2z-APrHMJm7WLsgVQGR8rCxC_mWzIxXlzgrVil7NedZBLOXfTONYQSBf1yNXrU" />
+                <div class="p-6 flex-grow flex flex-col">
+                    <span class="text-xs text-gray-500 mb-2 block font-montserrat font-semibold">10 Marzo 2025</span>
+                    <h3
+                        class="text-lg font-bold font-montserrat text-gray-900 mb-3 group-hover:text-sedir-green transition-colors line-clamp-2">
+                        Taller de liderazgo comunitario fortalece a mujeres rurales</h3>
+                    <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">SEDIR capacitó a 80 lideresas del Valle
+                        de Nepeña en gestión organizacional, derechos ciudadanos y desarrollo de emprendimientos
+                        locales, impulsando su participación activa en la toma de decisiones comunales.</p>
+                    <div class="mt-auto border-t border-gray-100 pt-4">
+                        <a class="text-sedir-green font-semibold text-sm flex items-center gap-1 hover:text-sedir-dark-green transition-colors group-hover:gap-2"
+                            href="#">
+                            Leer más
+                            <svg class="w-4 h-4 transition-all" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            <!-- Standard Card 3 -->
+            <article
+                class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col relative group cursor-pointer border-dashed border-2 border-blue-400">
+                <div class="absolute top-4 left-4 z-10">
+                    <span
+                        class="bg-sedir-orange text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-sm font-montserrat">Comunidad</span>
+                </div>
+                <img alt="Signing agreement"
+                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBphXksPjX_IefZtL5SkuUrOi91ppX61-1psfpn4ruNawKbUAEG4eUkfV1B7TDyCXg94NYuQYCyiEhwk3WTkstNfMN4V3Egat4Ktfk50RiPPYONJcw2U5y50jfiwZzEU-MUCm3xDZnpLvp3kMTDPTsHzgwBkGe_7Iz9l5y5iQcNpp7iIfkApLMjkaDsGkEsGJFVPf3-xaUoyGFqYFesicbhYKpK_u6wLwAxTSfGgH97f60oLNfg582SnRMWpIZz_OmeF4KYjK935s51" />
+                <div class="p-6 flex-grow flex flex-col">
+                    <span class="text-xs text-gray-500 mb-2 block font-montserrat font-semibold">20 Febrero 2025</span>
+                    <h3
+                        class="text-lg font-bold font-montserrat text-gray-900 mb-3 group-hover:text-sedir-green transition-colors line-clamp-2">
+                        SEDIR firma convenio con municipalidad para ampliar cobertura</h3>
+                    <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">El acuerdo permitirá extender los
+                        programas de desarrollo rural a 12 nuevas comunidades, beneficiando a más de 800 familias
+                        adicionales en zonas de difícil acceso del distrito de Nepeña.</p>
+                    <div class="mt-auto border-t border-gray-100 pt-4">
+                        <a class="text-sedir-green font-semibold text-sm flex items-center gap-1 hover:text-sedir-dark-green transition-colors group-hover:gap-2"
+                            href="#">
+                            Leer más
+                            <svg class="w-4 h-4 transition-all" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+            <!-- Standard Card 4 -->
+            <article
+                class="bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col relative group cursor-pointer border-dashed border-2 border-blue-400">
+                <div class="absolute top-4 left-4 z-10">
+                    <span
+                        class="bg-sedir-orange text-white text-xs font-bold px-3 py-1 uppercase tracking-wider rounded-sm font-montserrat">Agricultura</span>
+                </div>
+                <img alt="Organic farming inspection"
+                    class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                    src="https://lh3.googleusercontent.com/aida-public/AB6AXuBfHF6AEDARQ_IPUrL4xgBHRR_mJLK7wyxKSyAodG1HyvW48kumo-InjGm_DcrDLfJgYOdM2wOwwOjkpSzY5tszmfS6H4V7JIOUJ_T40BHDpfqfdjAZasvz4DAXrHtUqdBnPpi_z5rJkM-fmviX0kqUN7a56FvX9BwRWnAHJY7B-Xgtv37All30yigUM2VfswDIwMBJqRRRfjqu7v5SVBj4HmfKjWG8QsuYqPb4-nl3e1AK9mohEHpGI4UChB9OIBVLfOZOKYkFLPhr" />
+                <div class="p-6 flex-grow flex flex-col">
+                    <span class="text-xs text-gray-500 mb-2 block font-montserrat font-semibold">5 Febrero 2025</span>
+                    <h3
+                        class="text-lg font-bold font-montserrat text-gray-900 mb-3 group-hover:text-sedir-green transition-colors line-clamp-2">
+                        Productores orgánicos del valle obtienen certificación nacional</h3>
+                    <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">Gracias al acompañamiento técnico de
+                        SEDIR, 45 productores de espárragos y palta obtuvieron la certificación orgánica del SENASA,
+                        abriendo puertas a mercados de exportación con mejores precios.</p>
+                    <div class="mt-auto border-t border-gray-100 pt-4">
+                        <a class="text-sedir-green font-semibold text-sm flex items-center gap-1 hover:text-sedir-dark-green transition-colors group-hover:gap-2"
+                            href="#">
+                            Leer más
+                            <svg class="w-4 h-4 transition-all" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"></path>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+        <!-- END: News Grid -->
+    </main>
+    <!-- END: Main Content -->
+    <!-- BEGIN: Footer -->
+    <footer class="bg-gray-900 text-white mt-16 py-12">
+        <div class="container mx-auto px-4 max-w-7xl">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <!-- Footer Logo & Info -->
+                <div class="md:col-span-1">
+                    <img alt="SEDIR Footer Logo" class="h-10 mb-4 object-contain"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuC5Vl5ELi2BwXgxF--ThoLvwBwN1_VMFJg3MN27sSKfwdXQDQqHz71hF7A4Sba6ZPsqQ1iLJO6sErJ05_s5X_FI8v2YQ6zgYOY-UdAltNcErWLROSDhmcEo_AZ0EY-yGy92i7S6E1Wf0aXTZx8xXQmKTesXZmgGCQSA_qB-5cO1AhB8VfIVWLzMpzoIzp_ymQkysJ7ilr9Ym7JeocjnzZFzQlrIB1ZTNxxIUnCk9qA6kOMgA1FlR0Af-fF49Ix46WChD-jTaQ_DwYgl" />
+                    <p class="text-sm text-gray-400">
+                        Servicio para el Desarrollo Integral Rural. Trabajando por el bienestar de las familias
+                        productoras del Valle de Nepeña.
+                    </p>
+                </div>
+                <!-- Footer Links -->
+                <div>
+                    <h4 class="font-montserrat font-bold mb-4 text-lg">Enlaces Rápidos</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li><a class="hover:text-sedir-green transition-colors" href="#">Inicio</a></li>
+                        <li><a class="hover:text-sedir-green transition-colors" href="#">Quienes somos</a></li>
+                        <li><a class="hover:text-sedir-green transition-colors" href="#">Proyectos</a></li>
+                        <li><a class="hover:text-sedir-green transition-colors" href="#">Noticias</a></li>
+                    </ul>
+                </div>
+                <!-- Contact Info -->
+                <div>
+                    <h4 class="font-montserrat font-bold mb-4 text-lg">Contacto</h4>
+                    <ul class="space-y-2 text-sm text-gray-400">
+                        <li>Av. Principal s/n, Moro - Áncash</li>
+                        <li>info@sedir.org.pe</li>
+                        <li>+51 987 654 321</li>
+                    </ul>
+                </div>
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="font-montserrat font-bold mb-4 text-lg">Boletín</h4>
+                    <p class="text-sm text-gray-400 mb-4">Suscríbete para recibir nuestras últimas noticias y
+                        actualizaciones.</p>
+                    <form class="flex">
+                        <input
+                            class="px-4 py-2 w-full rounded-l-md text-gray-900 focus:outline-none focus:ring-1 focus:ring-sedir-green"
+                            placeholder="Tu correo electrónico" required="" type="email" />
+                        <button
+                            class="bg-sedir-green hover:bg-sedir-dark-green px-4 py-2 rounded-r-md transition-colors font-semibold"
+                            type="submit">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewbox="0 0 24 24">
+                                <path d="M14 5l7 7m0 0l-7 7m7-7H3" stroke-linecap="round" stroke-linejoin="round"
+                                    stroke-width="2"></path>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div
+                class="border-t border-gray-800 mt-8 pt-8 text-center text-sm text-gray-500 flex flex-col md:flex-row justify-between items-center">
+                <p>© 2025 SEDIR. Todos los derechos reservados.</p>
+                <div class="mt-4 md:mt-0 space-x-4">
+                    <a class="hover:text-white transition-colors" href="#">Facebook</a>
+                    <a class="hover:text-white transition-colors" href="#">Twitter</a>
+                    <a class="hover:text-white transition-colors" href="#">YouTube</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- END: Footer -->
+</body>
+
+</html>
