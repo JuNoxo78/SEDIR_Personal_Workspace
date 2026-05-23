@@ -48,6 +48,10 @@ async function initializePage() {
     await window.renderNoticiasCards();
   }
 
+  if (typeof window.renderProyectos === "function") {
+    await window.renderProyectos();
+  }
+
   if (typeof window.initFiltrosNoticias === "function") {
     window.initFiltrosNoticias();
   }

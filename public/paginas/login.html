@@ -70,6 +70,8 @@
 
                 </button>
 
+                <p id="login-error" class="hidden text-left text-sm text-red-600"></p>
+
                 <p class="text-xs text-gray-400 mt-2">demo: <span class="font-medium text-gray-700">admin</span> / <span
                         class="font-medium text-gray-700">sedir2025</span></p>
             </form>
@@ -77,16 +79,76 @@
     </div>
 
     <script>
-        // Handle login form submission
-        document.getElementById('login-form').addEventListener('submit', function (e) {
+        const loginForm = document.getElementById('login-form');
+        const loginError = document.getElementById('login-error');
+        const AUTH_TOKEN_KEY = 'sedir_admin_token';
+        const AUTH_USER_KEY = 'sedir_admin_user';
+
+        function clearAuth() {
+            localStorage.removeItem(AUTH_TOKEN_KEY);
+            localStorage.removeItem(AUTH_USER_KEY);
+        }
+
+        async function checkExistingSession() {
+            const token = localStorage.getItem(AUTH_TOKEN_KEY);
+
+            if (!token) {
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/auth/me', {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                });
+
+                if (response.ok) {
+                    window.location.href = '/paginas/admin.html';
+                    return;
+                }
+            } catch (error) {
+                console.error(error);
+            }
+
+            clearAuth();
+        }
+
+        checkExistingSession();
+
+        loginForm.addEventListener('submit', async function (e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
+            loginError.classList.add('hidden');
+
+            const identifier = document.getElementById('email').value.trim();
             const password = document.getElementById('password').value;
 
-            console.log('Login attempt:', { email, password });
+            try {
+                const response = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        identifier,
+                        password,
+                    }),
+                });
 
-            // TODO: Implement actual login logic
-            alert('Login functionality to be implemented');
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data?.error || 'No se pudo iniciar sesión');
+                }
+
+                localStorage.setItem(AUTH_TOKEN_KEY, data.token);
+                localStorage.setItem(AUTH_USER_KEY, JSON.stringify(data.user || {}));
+                window.location.href = '/paginas/admin.html';
+                return;
+            } catch (error) {
+                loginError.textContent = error.message;
+                loginError.classList.remove('hidden');
+            }
         });
     </script>
 </body>

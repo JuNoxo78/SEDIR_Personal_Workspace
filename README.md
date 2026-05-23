@@ -1,23 +1,24 @@
 # sedir-web-2026
 
-Base web de SEDIR con backend en Node.js, Express y PostgreSQL.
+Base web de SEDIR con frontend en `public/` y backend activo en `backend/` usando Node.js, Express y PostgreSQL.
 
 ## Requisitos
 
 - Node.js 18 o superior.
 - PostgreSQL 14 o superior, localmente o con Docker.
 
-## Estructura del backend
+## Estructura activa
 
-- `src/app.js`: configuracion de Express.
-- `src/server.js`: arranque de la API y validacion de conexion a PostgreSQL.
-- `src/config/database.js`: pool de `pg` y prueba `SELECT 1;`.
-- `src/routes/health.routes.js`: endpoint `GET /health`.
-- `src/middleware/errorHandler.js`: manejo de errores y 404.
+- `backend/src/app.js`: configuracion de Express.
+- `backend/src/server.js`: arranque de la API y validacion de conexion a PostgreSQL.
+- `backend/src/config/database.js`: pool de `pg` y prueba `SELECT 1;`.
+- `backend/src/routes/health.routes.js`: endpoint `GET /health`.
+- `backend/src/middleware/errorHandler.js`: manejo de errores y 404.
+- `public/`: frontend estático servido por el backend.
 
 ## Variables de entorno
 
-Usa `.env` o copia `.env.example`.
+Usa `backend/.env` o copia `backend/.env` como base.
 
 Variables disponibles:
 
@@ -31,15 +32,12 @@ Variables disponibles:
 
 ## Levantar PostgreSQL con Docker
 
-```bash
-docker compose up -d postgres
-```
-
-El contenedor usa PostgreSQL 14 y expone el puerto de host `55432`.
+El backend ya está configurado para conectarse a PostgreSQL local en `127.0.0.1:55432`.
 
 ## Ejecutar la API
 
 ```bash
+cd backend
 npm install
 npm run dev
 ```
