@@ -7,6 +7,7 @@
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
     <script src="../activos/js/components.js"></script>
     <script src="../activos/js/main.js"></script>
+    <script src="../activos/js/form.js" defer></script>
     <link href="../activos/css/style.css" rel="stylesheet" />
     <link href="../activos/css/navbar.css" rel="stylesheet" />
     <link href="../activos/css/hero.css" rel="stylesheet" />
@@ -129,7 +130,7 @@
                     <h2 class="font-heading font-bold text-3xl text-gray-900 mb-3">Envíanos un Mensaje</h2>
                     <p class="text-gray-500 text-base">Completa el formulario y nuestro equipo te responderá en menos de 24 horas.</p>
                 </div>
-                <form action="#" class="space-y-8" method="POST">
+                <form action="#" class="space-y-8" id="contact-form" method="POST">
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                         <div>
                             <label class="block text-sm font-semibold text-gray-700 mb-3" for="nombre">Nombre Completo</label>
@@ -161,6 +162,7 @@
                         <input class="w-5 h-5 border-gray-300 rounded text-sedir-green focus:ring-sedir-green mt-1" id="politica" name="politica" type="checkbox" />
                         <label class="text-sm text-gray-500 leading-relaxed" for="politica">Acepto la <a class="text-gray-700 underline font-medium hover:text-sedir-green" href="#">política de privacidad</a> de SEDIR</label>
                     </div>
+                    <p id="contact-form-status" class="text-sm font-semibold" aria-live="polite"></p>
                     <button class="w-full bg-sedir-green hover:bg-sedir-darkgreen text-white font-bold py-4 px-8 rounded-full transition-all flex items-center justify-center gap-3 shadow-md hover:shadow-lg transform hover:-translate-y-0.5 active:scale-95" type="submit">
                         Enviar mensaje
                         <svg class="h-5 w-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">

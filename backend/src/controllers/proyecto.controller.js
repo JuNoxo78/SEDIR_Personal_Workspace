@@ -7,6 +7,30 @@ function getMissingFields(payload, requiredFields) {
   });
 }
 
+function parsePositiveInteger(value) {
+  const normalized = String(value || '').trim();
+
+  if (!/^[1-9]\d*$/.test(normalized)) {
+    return null;
+  }
+
+  const parsed = Number(normalized);
+
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) {
+    return null;
+  }
+
+  return parsed;
+}
+
+function sanitizeText(value) {
+  return String(value || '')
+    .trim()
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
+    .replace(/javascript:/gi, '');
+}
+
 async function obtenerProyectos(req, res) {
   try {
     const result = await pool.query(`
@@ -48,6 +72,16 @@ async function crearProyecto(req, res) {
       });
     }
 
+    const proyecto = {
+      nombre: sanitizeText(req.body.nombre),
+      descripcion: sanitizeText(req.body.descripcion),
+      fecha_inicio: sanitizeText(req.body.fecha_inicio),
+      fecha_fin: sanitizeText(req.body.fecha_fin),
+      estado: sanitizeText(req.body.estado),
+      beneficiarios: sanitizeText(req.body.beneficiarios),
+      imagen: sanitizeText(req.body.imagen),
+    };
+
     const result = await pool.query(
       `
         INSERT INTO proyecto (
@@ -71,13 +105,13 @@ async function crearProyecto(req, res) {
           imagen
       `,
       [
-        req.body.nombre,
-        req.body.descripcion,
-        req.body.fecha_inicio,
-        req.body.fecha_fin,
-        req.body.estado,
-        req.body.beneficiarios,
-        req.body.imagen,
+        proyecto.nombre,
+        proyecto.descripcion,
+        proyecto.fecha_inicio,
+        proyecto.fecha_fin,
+        proyecto.estado,
+        proyecto.beneficiarios,
+        proyecto.imagen,
       ]
     );
 
@@ -89,7 +123,7 @@ async function crearProyecto(req, res) {
 
 async function actualizarProyecto(req, res) {
   try {
-    const { id } = req.params;
+    const id = parsePositiveInteger(req.params.id);
     const missingFields = getMissingFields(req.body, [
       'nombre',
       'descripcion',
@@ -106,6 +140,22 @@ async function actualizarProyecto(req, res) {
         missingFields,
       });
     }
+
+    if (!id) {
+      return res.status(400).json({
+        error: 'El id del proyecto debe ser un número entero válido',
+      });
+    }
+
+    const proyecto = {
+      nombre: sanitizeText(req.body.nombre),
+      descripcion: sanitizeText(req.body.descripcion),
+      fecha_inicio: sanitizeText(req.body.fecha_inicio),
+      fecha_fin: sanitizeText(req.body.fecha_fin),
+      estado: sanitizeText(req.body.estado),
+      beneficiarios: sanitizeText(req.body.beneficiarios),
+      imagen: sanitizeText(req.body.imagen),
+    };
 
     const result = await pool.query(
       `
@@ -130,13 +180,13 @@ async function actualizarProyecto(req, res) {
           imagen
       `,
       [
-        req.body.nombre,
-        req.body.descripcion,
-        req.body.fecha_inicio,
-        req.body.fecha_fin,
-        req.body.estado,
-        req.body.beneficiarios,
-        req.body.imagen,
+        proyecto.nombre,
+        proyecto.descripcion,
+        proyecto.fecha_inicio,
+        proyecto.fecha_fin,
+        proyecto.estado,
+        proyecto.beneficiarios,
+        proyecto.imagen,
         id,
       ]
     );
@@ -153,7 +203,14 @@ async function actualizarProyecto(req, res) {
 
 async function eliminarProyecto(req, res) {
   try {
-    const { id } = req.params;
+    const id = parsePositiveInteger(req.params.id);
+
+    if (!id) {
+      return res.status(400).json({
+        error: 'El id del proyecto debe ser un número entero válido',
+      });
+    }
+
     const result = await pool.query(
       `
         DELETE FROM proyecto

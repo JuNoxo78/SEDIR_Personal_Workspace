@@ -2,7 +2,19 @@ require('dotenv').config();
 
 const pool = require('../src/config/database');
 
+const ALLOWED_TABLES = new Set(['noticia', 'proyecto']);
+
+function getSafeTableName(tableName) {
+  if (!ALLOWED_TABLES.has(tableName)) {
+    throw new Error(`Tabla no permitida para actualización de esquema: ${tableName}`);
+  }
+
+  return `"${tableName}"`;
+}
+
 async function ensureIdColumn(tableName) {
+  const safeTableName = getSafeTableName(tableName);
+
   const idColumn = await pool.query(
     `
       SELECT 1
@@ -18,18 +30,18 @@ async function ensureIdColumn(tableName) {
     return;
   }
 
-  await pool.query(`ALTER TABLE ${tableName} ADD COLUMN id BIGSERIAL`);
+  await pool.query(`ALTER TABLE ${safeTableName} ADD COLUMN id BIGSERIAL`);
 
   await pool.query(
     `
-      UPDATE ${tableName}
+      UPDATE ${safeTableName}
       SET id = nextval(pg_get_serial_sequence($1, 'id'))
       WHERE id IS NULL
     `,
     [tableName]
   );
 
-  await pool.query(`ALTER TABLE ${tableName} ALTER COLUMN id SET NOT NULL`);
+  await pool.query(`ALTER TABLE ${safeTableName} ALTER COLUMN id SET NOT NULL`);
 
   const primaryKey = await pool.query(
     `
@@ -43,7 +55,7 @@ async function ensureIdColumn(tableName) {
   );
 
   if (!primaryKey.rowCount) {
-    await pool.query(`ALTER TABLE ${tableName} ADD PRIMARY KEY (id)`);
+    await pool.query(`ALTER TABLE ${safeTableName} ADD PRIMARY KEY (id)`);
   }
 }
 

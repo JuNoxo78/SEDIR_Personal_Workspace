@@ -6,13 +6,13 @@ const {
   actualizarNoticia,
   eliminarNoticia,
 } = require('../controllers/noticia.controller');
-const { requireAuth } = require('../middleware/auth.middleware');
+const { requireAdmin, requireAuth } = require('../middleware/auth.middleware');
 
 const router = express.Router();
 
 router.get('/', obtenerNoticias);
-router.post('/', requireAuth, crearNoticia);
-router.put('/:id', requireAuth, actualizarNoticia);
-router.delete('/:id', requireAuth, eliminarNoticia);
+router.post('/', requireAuth, requireAdmin, crearNoticia);
+router.put('/:id', requireAuth, requireAdmin, actualizarNoticia);
+router.delete('/:id', requireAuth, requireAdmin, eliminarNoticia);
 
 module.exports = router;

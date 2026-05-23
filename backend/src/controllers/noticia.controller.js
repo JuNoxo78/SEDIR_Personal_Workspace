@@ -7,6 +7,30 @@ function getMissingFields(payload, requiredFields) {
   });
 }
 
+function parsePositiveInteger(value) {
+  const normalized = String(value || '').trim();
+
+  if (!/^[1-9]\d*$/.test(normalized)) {
+    return null;
+  }
+
+  const parsed = Number(normalized);
+
+  if (!Number.isSafeInteger(parsed) || parsed <= 0) {
+    return null;
+  }
+
+  return parsed;
+}
+
+function sanitizeText(value) {
+  return String(value || '')
+    .trim()
+    .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+    .replace(/\son\w+\s*=\s*(['"]).*?\1/gi, '')
+    .replace(/javascript:/gi, '');
+}
+
 async function obtenerNoticias(req, res) {
   try {
     const result = await pool.query(`
@@ -55,6 +79,13 @@ async function crearNoticia(req, res) {
       });
     }
 
+    const noticia = {
+      titulo: sanitizeText(req.body.titulo),
+      fecha: sanitizeText(req.body.fecha),
+      contenido: sanitizeText(req.body.contenido),
+      imagen_portada: sanitizeText(req.body.imagen_portada),
+    };
+
     const result = await pool.query(
       `
         INSERT INTO noticia (
@@ -76,10 +107,10 @@ async function crearNoticia(req, res) {
           updated_at
       `,
       [
-        req.body.titulo,
-        req.body.fecha,
-        req.body.contenido,
-        req.body.imagen_portada,
+        noticia.titulo,
+        noticia.fecha,
+        noticia.contenido,
+        noticia.imagen_portada,
         categoriaId,
       ]
     );
@@ -94,7 +125,7 @@ async function crearNoticia(req, res) {
 
 async function actualizarNoticia(req, res) {
   try {
-    const { id } = req.params;
+    const id = parsePositiveInteger(req.params.id);
     const categoriaId = Number(req.body.id_categoria_noticia);
     const missingFields = getMissingFields(req.body, [
       'titulo',
@@ -111,11 +142,24 @@ async function actualizarNoticia(req, res) {
       });
     }
 
+    if (!id) {
+      return res.status(400).json({
+        error: 'El id de la noticia debe ser un número entero válido',
+      });
+    }
+
     if (!Number.isInteger(categoriaId)) {
       return res.status(400).json({
         error: 'La categoría debe ser un número entero válido',
       });
     }
+
+    const noticia = {
+      titulo: sanitizeText(req.body.titulo),
+      fecha: sanitizeText(req.body.fecha),
+      contenido: sanitizeText(req.body.contenido),
+      imagen_portada: sanitizeText(req.body.imagen_portada),
+    };
 
     const result = await pool.query(
       `
@@ -138,10 +182,10 @@ async function actualizarNoticia(req, res) {
           updated_at
       `,
       [
-        req.body.titulo,
-        req.body.fecha,
-        req.body.contenido,
-        req.body.imagen_portada,
+        noticia.titulo,
+        noticia.fecha,
+        noticia.contenido,
+        noticia.imagen_portada,
         categoriaId,
         id,
       ]
@@ -163,7 +207,13 @@ async function actualizarNoticia(req, res) {
 
 async function eliminarNoticia(req, res) {
   try {
-    const { id } = req.params;
+    const id = parsePositiveInteger(req.params.id);
+
+    if (!id) {
+      return res.status(400).json({
+        error: 'El id de la noticia debe ser un número entero válido',
+      });
+    }
 
     const result = await pool.query(
       `

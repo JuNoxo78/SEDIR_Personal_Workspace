@@ -38,6 +38,22 @@ function requireAuth(req, res, next) {
   }
 }
 
+function requireRole(...allowedRoles) {
+  return function roleGuard(req, res, next) {
+    const userRole = req.auth?.rol;
+
+    if (!userRole || !allowedRoles.includes(userRole)) {
+      return res.status(403).json({
+        error: 'No autorizado para realizar esta acción',
+      });
+    }
+
+    return next();
+  };
+}
+
 module.exports = {
   requireAuth,
+  requireAdmin: requireRole('admin'),
+  requireRole,
 };
