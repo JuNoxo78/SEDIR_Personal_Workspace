@@ -30,9 +30,17 @@ Variables disponibles:
 - `PGDATABASE`
 - `PGSSL`
 
-## Levantar PostgreSQL con Docker
+## Base de datos
 
-El backend ya está configurado para conectarse a PostgreSQL local en `127.0.0.1:55432`.
+Este proyecto espera una instancia de PostgreSQL externa configurada mediante las
+variables de entorno en `backend/.env` (`PGHOST`, `PGPORT`, `PGUSER`,
+`PGPASSWORD`, `PGDATABASE`, `PGSSL`).
+
+Anteriormente se incluía un servicio `postgres` en `docker-compose.yml` para
+desarrollo local; se ha retirado porque se asume que usas una base de datos
+real/externa. Si necesitas levantar Postgres localmente, puedes volver a añadir
+un servicio en `docker-compose.yml` o ejecutar un contenedor separado y ajustar
+`backend/.env` para apuntar a `localhost:<puerto>`.
 
 ## Ejecutar la API
 
