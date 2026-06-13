@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,17 +8,53 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="../activos/css/style.css" />
   <style>
-    body { font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; }
-    .sidebar { width: 280px; }
-    .content { margin-left: 300px; }
-    .card { border-radius: 60px; box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08); }
-    .nav-link.active { background: #f0faf4; color: #00944a; font-weight: 700; }
-    .field { border: 1px solid #e5e7eb; border-radius: 16px; padding: 12px 14px; width: 100%; }
-    .field:focus { outline: none; border-color: #00944a; box-shadow: 0 0 0 4px rgba(0, 148, 74, 0.08); }
-    .btn-primary { background: #00944a; color: white; }
-    .btn-primary:hover { background: #007a3d; }
+    body {
+      font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    .sidebar {
+      width: 280px;
+    }
+
+    .content {
+      margin-left: 300px;
+    }
+
+    .card {
+      border-radius: 60px;
+      box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
+    }
+
+    .nav-link.active {
+      background: #f0faf4;
+      color: #00944a;
+      font-weight: 700;
+    }
+
+    .field {
+      border: 1px solid #e5e7eb;
+      border-radius: 16px;
+      padding: 12px 14px;
+      width: 100%;
+    }
+
+    .field:focus {
+      outline: none;
+      border-color: #00944a;
+      box-shadow: 0 0 0 4px rgba(0, 148, 74, 0.08);
+    }
+
+    .btn-primary {
+      background: #00944a;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #007a3d;
+    }
   </style>
 </head>
+
 <body class="bg-slate-50 min-h-screen">
   <div class="fixed inset-y-0 left-0 sidebar bg-white border-r border-slate-100 p-6 overflow-y-auto">
     <div class="mb-5 text-center">
@@ -33,7 +70,8 @@
       <div class="text-sm text-slate-500">
         Sesión activa: <span id="session-user" class="font-semibold text-slate-700">-</span>
       </div>
-      <a href="/paginas/login.html" id="logout-link" class="inline-flex text-sm font-semibold text-red-600">Cerrar sesión</a>
+      <a href="/paginas/login.html" id="logout-link" class="inline-flex text-sm font-semibold text-red-600">Cerrar
+        sesión</a>
     </div>
   </div>
 
@@ -176,39 +214,138 @@
     }
 
     function noticiaForm(model) {
-      const data = model || { titulo: '', fecha: '', contenido: '', imagen_portada: '', id_categoria_noticia: '', facebook_reel_url: '' };
-      return `
-        <input type="hidden" name="id" value="${escapeHtml(data.id || '')}" />
-        <div>
-          <label class="text-sm font-semibold text-slate-600">Título *</label>
-          <input class="field mt-2" name="titulo" required value="${escapeHtml(data.titulo)}" />
-        </div>
-        <div>
-          <label class="text-sm font-semibold text-slate-600">Fecha *</label>
-          <input class="field mt-2" type="date" name="fecha" required value="${escapeHtml((data.fecha || '').slice(0, 10))}" />
-        </div>
-        <div>
-          <label class="text-sm font-semibold text-slate-600">Contenido *</label>
-          <textarea class="field mt-2 min-h-40" name="contenido" required>${escapeHtml(data.contenido)}</textarea>
-        </div>
-        <div>
-          <label class="text-sm font-semibold text-slate-600">Imagen portada *</label>
-          <input class="field mt-2" name="imagen_portada" required value="${escapeHtml(data.imagen_portada)}" />
-        </div>
-        <div>
-          <label class="text-sm font-semibold text-slate-600">Facebook Reel (URL)</label>
-          <input class="field mt-2" name="facebook_reel_url" placeholder="https://www.facebook.com/reel/..." value="${escapeHtml(data.facebook_reel_url)}" />
-        </div>
-        <div>
-          <label class="text-sm font-semibold text-slate-600">Categoría *</label>
-          <input class="field mt-2" type="number" step="1" min="1" name="id_categoria_noticia" required value="${escapeHtml(data.id_categoria_noticia)}" />
-        </div>
-        <div class="flex flex-wrap gap-3 pt-2">
-          <button class="btn-primary rounded-full px-5 py-3 font-semibold" type="submit">${model ? 'Actualizar noticia' : 'Crear noticia'}</button>
-          ${model ? '<button type="button" data-reset-form class="rounded-full px-5 py-3 font-semibold border border-slate-200">Cancelar</button>' : ''}
-        </div>
-      `;
-    }
+  const data = model || {
+    titulo: '',
+    subtitulo: '',
+    fecha: '',
+    contenido: '',
+    imagen_portada: '',
+    id_categoria_noticia: '',
+    facebook_reel_url: ''
+  };
+
+  return `
+    <input type="hidden" name="id" value="${escapeHtml(data.id || '')}" />
+
+    <div>
+      <label class="text-sm font-semibold text-slate-600">
+        Título *
+      </label>
+      <input
+        class="field mt-2"
+        name="titulo"
+        required
+        value="${escapeHtml(data.titulo)}" />
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold text-slate-600">
+        Bajada o Subtítulo *
+      </label>
+
+      <textarea
+        class="field mt-2 min-h-24"
+        name="subtitulo"
+        required>${escapeHtml(data.subtitulo || '')}</textarea>
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold text-slate-600">
+        Fecha *
+      </label>
+
+      <input
+        class="field mt-2"
+        type="date"
+        name="fecha"
+        required
+        value="${escapeHtml((data.fecha || '').slice(0, 10))}" />
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold text-slate-600">
+        Contenido *
+      </label>
+
+      <textarea
+        class="field mt-2 min-h-40"
+        name="contenido"
+        required>${escapeHtml(data.contenido)}</textarea>
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold text-slate-600">
+        Imagen portada *
+      </label>
+
+      <input
+        class="field mt-2"
+        name="imagen_portada"
+        required
+        value="${escapeHtml(data.imagen_portada)}" />
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold text-slate-600">
+        Facebook Reel (URL)
+      </label>
+
+      <input
+        class="field mt-2"
+        name="facebook_reel_url"
+        placeholder="https://www.facebook.com/reel/..."
+        value="${escapeHtml(data.facebook_reel_url)}" />
+    </div>
+
+    <div>
+      <label class="text-sm font-semibold text-slate-600">
+        Categoría *
+      </label>
+
+      <select
+        class="field mt-2"
+        name="id_categoria_noticia"
+        required>
+
+        <option value="">Seleccione una categoría</option>
+
+        <option value="1" ${String(data.id_categoria_noticia) === '1' ? 'selected' : ''}>
+          Agricultura
+        </option>
+
+        <option value="2" ${String(data.id_categoria_noticia) === '2' ? 'selected' : ''}>
+          Capacitación
+        </option>
+
+        <option value="3" ${String(data.id_categoria_noticia) === '3' ? 'selected' : ''}>
+          Proyectos
+        </option>
+
+        <option value="4" ${String(data.id_categoria_noticia) === '4' ? 'selected' : ''}>
+          Institucional
+        </option>
+
+        <option value="5" ${String(data.id_categoria_noticia) === '5' ? 'selected' : ''}>
+          Eventos
+        </option>
+
+      </select>
+    </div>
+
+    <div class="flex flex-wrap gap-3 pt-2">
+      <button
+        class="btn-primary rounded-full px-5 py-3 font-semibold"
+        type="submit">
+        ${model ? 'Actualizar noticia' : 'Crear noticia'}
+      </button>
+
+      ${model
+        ? '<button type="button" data-reset-form class="rounded-full px-5 py-3 font-semibold border border-slate-200">Cancelar</button>'
+        : ''
+      }
+    </div>
+  `;
+}
 
     function proyectoForm(model) {
       const data = model || { nombre: '', descripcion: '', fecha_inicio: '', fecha_fin: '', estado: '', beneficiarios: '', imagen: '' };
@@ -566,4 +703,5 @@
     })();
   </script>
 </body>
+
 </html>

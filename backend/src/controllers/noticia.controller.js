@@ -35,17 +35,21 @@ async function obtenerNoticias(req, res) {
   try {
     const result = await pool.query(`
       SELECT
-        id_noticia AS id,
-        titulo,
-        fecha,
-        contenido,
-        facebook_reel_url,
-        imagen_portada,
-        id_categoria_noticia,
-        created_at,
-        updated_at
-      FROM noticia
-      ORDER BY fecha DESC, id_noticia DESC
+        n.id_noticia AS id,
+        n.titulo,
+        n.subtitulo,
+        n.fecha,
+        n.contenido,
+        n.facebook_reel_url,
+        n.imagen_portada,
+        n.id_categoria_noticia,
+        c.nombre_categoria,
+        n.created_at,
+        n.updated_at
+      FROM noticia n
+      LEFT JOIN categoria_noticia c
+      ON n.id_categoria_noticia = c.id_categoria_noticia
+      ORDER BY n.fecha DESC, n.id_noticia DESC
     `);
 
     res.json(result.rows);
@@ -61,6 +65,7 @@ async function crearNoticia(req, res) {
     const categoriaId = Number(req.body.id_categoria_noticia);
     const missingFields = getMissingFields(req.body, [
       'titulo',
+      'subtitulo',
       'fecha',
       'contenido',
       'imagen_portada',
@@ -82,6 +87,7 @@ async function crearNoticia(req, res) {
 
     const noticia = {
       titulo: sanitizeText(req.body.titulo),
+      subtitulo: sanitizeText(req.body.subtitulo),
       fecha: sanitizeText(req.body.fecha),
       contenido: sanitizeText(req.body.contenido),
       imagen_portada: sanitizeText(req.body.imagen_portada),
@@ -92,16 +98,18 @@ async function crearNoticia(req, res) {
       `
         INSERT INTO noticia (
           titulo,
+          subtitulo,
           fecha,
           contenido,
           imagen_portada,
           facebook_reel_url,
           id_categoria_noticia
         )
-        VALUES ($1, $2, $3, $4, $5, $6)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING
           id_noticia AS id,
           titulo,
+          subtitulo,
           fecha,
           contenido,
           facebook_reel_url,
@@ -112,6 +120,7 @@ async function crearNoticia(req, res) {
       `,
       [
         noticia.titulo,
+        noticia.subtitulo,
         noticia.fecha,
         noticia.contenido,
         noticia.imagen_portada,
@@ -134,6 +143,7 @@ async function actualizarNoticia(req, res) {
     const categoriaId = Number(req.body.id_categoria_noticia);
     const missingFields = getMissingFields(req.body, [
       'titulo',
+      'subtitulo',
       'fecha',
       'contenido',
       'imagen_portada',
@@ -161,6 +171,7 @@ async function actualizarNoticia(req, res) {
 
     const noticia = {
       titulo: sanitizeText(req.body.titulo),
+      subtitulo: sanitizeText(req.body.subtitulo),
       fecha: sanitizeText(req.body.fecha),
       contenido: sanitizeText(req.body.contenido),
       imagen_portada: sanitizeText(req.body.imagen_portada),
@@ -176,8 +187,9 @@ async function actualizarNoticia(req, res) {
           contenido = $3,
           imagen_portada = $4,
           facebook_reel_url = $5,
-          id_categoria_noticia = $6
-        WHERE id_noticia = $7
+          subtitulo = $6,
+          id_categoria_noticia = $7
+        WHERE id_noticia = $8
         RETURNING
           id_noticia AS id,
           titulo,
@@ -191,6 +203,7 @@ async function actualizarNoticia(req, res) {
       `,
       [
         noticia.titulo,
+        noticia.subtitulo,
         noticia.fecha,
         noticia.contenido,
         noticia.imagen_portada,
@@ -231,6 +244,7 @@ async function eliminarNoticia(req, res) {
         RETURNING
           id_noticia AS id,
           titulo,
+          subtitulo,
           fecha,
           contenido,
           facebook_reel_url,

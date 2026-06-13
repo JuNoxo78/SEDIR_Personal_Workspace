@@ -12,8 +12,8 @@ function toNoticiasCards(items) {
   return items.map(function (item) {
     return {
       articleClass: 'bg-white rounded-[30px] shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col relative group cursor-pointer news-card',
-      categoryKey: item.id_categoria_noticia || 'General',
-      category: item.id_categoria_noticia || 'General',
+      categoryKey: item.nombre_categoria || 'General',
+      category: item.nombre_categoria || 'General',
       image: item.imagen_portada || '',
       alt: item.titulo || 'Noticia',
       imageClass: 'w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300',
@@ -51,7 +51,7 @@ function renderHomeNoticias(items) {
         <div class="p-6 flex flex-col flex-grow">
           <div class="flex items-center gap-4 mb-4">
             <span class="text-xs text-gray-500 font-medium">${escapeHtml(dateLabel)}</span>
-            <span class="text-xs category-badge px-3 py-1 rounded-full font-medium">${escapeHtml(item.id_categoria_noticia || 'General')}</span>
+            <span class="text-xs category-badge px-3 py-1 rounded-full font-medium">${escapeHtml(item.nombre_categoria || 'General')}</span>
           </div>
           <h3 class="text-lg font-bold text-gray-900 mb-3 leading-snug">${escapeHtml(item.titulo || '')}</h3>
           <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">${escapeHtml((item.contenido || '').slice(0, 160))}</p>
@@ -69,7 +69,7 @@ function renderHomeNoticias(items) {
         <div class="p-6 flex flex-col flex-grow">
           <div class="flex items-center gap-4 mb-4">
             <span class="text-xs text-gray-500 font-medium">${escapeHtml(dateLabel)}</span>
-            <span class="text-xs category-badge px-3 py-1 rounded-full font-medium">${escapeHtml(item.id_categoria_noticia || 'General')}</span>
+            <span class="text-xs category-badge px-3 py-1 rounded-full font-medium">${escapeHtml(item.nombre_categoria || 'General')}</span>
           </div>
           <h3 class="text-lg font-bold text-gray-900 mb-3 leading-snug">${escapeHtml(item.titulo || '')}</h3>
           <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">${escapeHtml((item.contenido || '').slice(0, 160))}</p>
