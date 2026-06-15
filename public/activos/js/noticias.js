@@ -8,12 +8,23 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
+function getCategoryLabel(item) {
+  return String(item && (item.nombre_categoria || item.categoria || item.id_categoria_noticia) || 'General').trim() || 'General';
+}
+
+function getCategoryKey(item) {
+  return String(item && item.id_categoria_noticia ? item.id_categoria_noticia : getCategoryLabel(item)).trim().toLowerCase();
+}
+
 function toNoticiasCards(items) {
   return items.map(function (item) {
+    var categoryLabel = getCategoryLabel(item);
+    var categoryKey = getCategoryKey(item);
+
     return {
       articleClass: 'bg-white rounded-[30px] shadow-sm hover:shadow-md transition-shadow border border-gray-100 overflow-hidden flex flex-col relative group cursor-pointer news-card',
-      categoryKey: item.nombre_categoria || 'General',
-      category: item.nombre_categoria || 'General',
+      categoryKey: categoryKey,
+      category: categoryLabel,
       image: item.imagen_portada || '',
       alt: item.titulo || 'Noticia',
       imageClass: 'w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300',
@@ -38,28 +49,7 @@ function renderHomeNoticias(items) {
   container.innerHTML = items.map(function (item) {
     var image = item.imagen_portada || '/activos/img_noticias/notapalta00428114_18-08-25.jpg';
     var dateLabel = item.fecha ? new Date(item.fecha).toLocaleDateString('es-PE', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Sin fecha';
-
-    if (item.facebook_reel_url) {
-      // embed Facebook Reel via iframe (URL should be public)
-      const encoded = encodeURIComponent(item.facebook_reel_url);
-      const iframeSrc = `https://www.facebook.com/plugins/video.php?href=${encoded}&show_text=0&width=560`;
-      return `
-      <article class="bg-white rounded-[30px] overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all group flex flex-col">
-        <div class="relative h-56 overflow-hidden">
-          <iframe class="w-full h-full" src="${iframeSrc}" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; picture-in-picture"></iframe>
-        </div>
-        <div class="p-6 flex flex-col flex-grow">
-          <div class="flex items-center gap-4 mb-4">
-            <span class="text-xs text-gray-500 font-medium">${escapeHtml(dateLabel)}</span>
-            <span class="text-xs category-badge px-3 py-1 rounded-full font-medium">${escapeHtml(item.nombre_categoria || 'General')}</span>
-          </div>
-          <h3 class="text-lg font-bold text-gray-900 mb-3 leading-snug">${escapeHtml(item.titulo || '')}</h3>
-          <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">${escapeHtml((item.contenido || '').slice(0, 160))}</p>
-          <a class="readmore-link font-semibold text-sm flex items-center gap-2 group-hover:gap-3 transition-all" href="/paginas/noticia.html">Leer más</a>
-        </div>
-      </article>
-      `;
-    }
+    var categoryLabel = getCategoryLabel(item);
 
     return `
       <article class="bg-white rounded-[30px] overflow-hidden border border-gray-200 shadow-sm hover:shadow-lg transition-all group flex flex-col">
@@ -69,7 +59,7 @@ function renderHomeNoticias(items) {
         <div class="p-6 flex flex-col flex-grow">
           <div class="flex items-center gap-4 mb-4">
             <span class="text-xs text-gray-500 font-medium">${escapeHtml(dateLabel)}</span>
-            <span class="text-xs category-badge px-3 py-1 rounded-full font-medium">${escapeHtml(item.nombre_categoria || 'General')}</span>
+            <span class="text-xs category-badge px-3 py-1 rounded-full font-medium">${escapeHtml(categoryLabel)}</span>
           </div>
           <h3 class="text-lg font-bold text-gray-900 mb-3 leading-snug">${escapeHtml(item.titulo || '')}</h3>
           <p class="text-gray-600 text-sm mb-6 flex-grow line-clamp-3">${escapeHtml((item.contenido || '').slice(0, 160))}</p>
@@ -145,7 +135,6 @@ async function renderNoticiasCards() {
   var cardNodes = container.querySelectorAll('[data-news-card]');
   cardNodes.forEach(function (node, idx) {
     var source = noticias[idx] || {};
-    if (source.facebook_reel_url) node.dataset.reel = source.facebook_reel_url;
     node.dataset.title = source.titulo || '';
     node.dataset.content = source.contenido || '';
     node.dataset.image = source.imagen_portada || '';
@@ -162,26 +151,14 @@ function openNewsModal(data) {
   if (!modal || !content) return;
   content.innerHTML = '';
 
-  // Preferred: show embedded facebook reel if present
-  if (data.reel) {
-    var encoded = encodeURIComponent(data.reel);
-    var iframe = document.createElement('iframe');
-    iframe.setAttribute('src', 'https://www.facebook.com/plugins/video.php?href=' + encoded + '&show_text=0&width=900');
-    iframe.setAttribute('frameborder', '0');
-    iframe.setAttribute('allow', 'autoplay; clipboard-write; encrypted-media; picture-in-picture');
-    iframe.className = 'w-full h-full';
-    content.appendChild(iframe);
-  } else {
-    // Display image and content sized to video aspect ratio
-    var wrapper = document.createElement('div');
-    wrapper.className = 'w-full h-full flex flex-col';
-    var img = document.createElement('img');
-    img.src = data.image || '';
-    img.alt = data.title || '';
-    img.className = 'w-full h-full object-cover';
-    wrapper.appendChild(img);
-    content.appendChild(wrapper);
-  }
+  var wrapper = document.createElement('div');
+  wrapper.className = 'w-full h-full flex flex-col';
+  var img = document.createElement('img');
+  img.src = data.image || '';
+  img.alt = data.title || '';
+  img.className = 'w-full h-full object-cover';
+  wrapper.appendChild(img);
+  content.appendChild(wrapper);
 
   modal.classList.remove('hidden');
 }

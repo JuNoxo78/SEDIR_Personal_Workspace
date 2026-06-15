@@ -21,7 +21,7 @@
     }
 
     .card {
-      border-radius: 60px;
+      border-radius: 20px;
       box-shadow: 0 14px 40px rgba(15, 23, 42, 0.08);
     }
 
@@ -142,6 +142,13 @@
       return date.toLocaleDateString('es-PE', { year: 'numeric', month: 'short', day: '2-digit' });
     }
 
+    function formatDateForInput(value) {
+      if (!value) return '';
+      const date = new Date(value);
+      if (Number.isNaN(date.getTime())) return '';
+      return date.toISOString().slice(0, 10);
+    }
+
     async function requestJson(path, options) {
       const token = getToken();
       const providedHeaders = options?.headers || {};
@@ -220,8 +227,7 @@
     fecha: '',
     contenido: '',
     imagen_portada: '',
-    id_categoria_noticia: '',
-    facebook_reel_url: ''
+    id_categoria_noticia: ''
   };
 
   return `
@@ -259,7 +265,7 @@
         type="date"
         name="fecha"
         required
-        value="${escapeHtml((data.fecha || '').slice(0, 10))}" />
+        value="${escapeHtml(formatDateForInput(data.fecha))}" />
     </div>
 
     <div>
@@ -283,18 +289,6 @@
         name="imagen_portada"
         required
         value="${escapeHtml(data.imagen_portada)}" />
-    </div>
-
-    <div>
-      <label class="text-sm font-semibold text-slate-600">
-        Facebook Reel (URL)
-      </label>
-
-      <input
-        class="field mt-2"
-        name="facebook_reel_url"
-        placeholder="https://www.facebook.com/reel/..."
-        value="${escapeHtml(data.facebook_reel_url)}" />
     </div>
 
     <div>
@@ -401,7 +395,7 @@
               <div class="text-xs text-slate-500 max-w-xl">${escapeHtml((item.contenido || '').slice(0, 110))}</div>
             </td>
             <td class="py-4 pr-4 whitespace-nowrap">${formatDate(item.fecha)}</td>
-            <td class="py-4 pr-4">${escapeHtml(item.id_categoria_noticia)}</td>
+            <td class="py-4 pr-4">${escapeHtml(item.nombre_categoria || item.id_categoria_noticia)}</td>
             <td class="py-4 pr-4">
               <div class="flex gap-2">
                 <button class="px-3 py-1.5 rounded-full border border-slate-200 text-sm font-semibold" data-edit-noticia="${item.id}">Editar</button>
@@ -546,7 +540,7 @@
 
     async function saveNoticia(form) {
       const data = Object.fromEntries(new FormData(form).entries());
-      if (!data.titulo || !data.fecha || !data.contenido || !data.imagen_portada || !data.id_categoria_noticia) {
+      if (!data.titulo || !data.subtitulo || !data.fecha || !data.contenido || !data.imagen_portada || !data.id_categoria_noticia) {
         throw new Error('Todos los campos de noticia son obligatorios');
       }
 
