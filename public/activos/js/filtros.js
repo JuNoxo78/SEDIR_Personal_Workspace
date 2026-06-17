@@ -8,13 +8,12 @@ function initFiltrosNoticias() {
   }
 
   var buttons = Array.from(container.querySelectorAll("[data-filter]"));
-  var activeClasses = "bg-sedir-green text-white px-4 py-1.5 rounded-full text-sm font-semibold hover:bg-sedir-dark-green transition-colors";
-  var inactiveClasses = "bg-white border border-gray-300 text-gray-600 px-4 py-1.5 rounded-full text-sm font-semibold hover:border-sedir-green hover:text-sedir-green transition-colors";
 
   function setActiveButton(activeFilter) {
     buttons.forEach(function (button) {
       var filter = button.getAttribute("data-filter") || "all";
-      button.className = filter === activeFilter ? activeClasses : inactiveClasses;
+      button.classList.toggle("is-active", filter === activeFilter);
+      button.setAttribute("aria-pressed", filter === activeFilter ? "true" : "false");
     });
   }
 

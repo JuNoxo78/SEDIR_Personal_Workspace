@@ -35,17 +35,20 @@ async function obtenerNoticias(req, res) {
   try {
     const result = await pool.query(`
       SELECT
-        id_noticia AS id,
-        titulo,
-        fecha,
-        contenido,
-        facebook_reel_url,
-        imagen_portada,
-        id_categoria_noticia,
-        created_at,
-        updated_at
-      FROM noticia
-      ORDER BY fecha DESC, id_noticia DESC
+        n.id_noticia AS id,
+        n.titulo,
+        n.subtitulo,
+        n.fecha,
+        n.contenido,
+        n.imagen_portada,
+        n.id_categoria_noticia,
+        c.nombre_categoria,
+        n.created_at,
+        n.updated_at
+      FROM noticia n
+      LEFT JOIN categoria_noticia c
+      ON n.id_categoria_noticia = c.id_categoria_noticia
+      ORDER BY n.fecha DESC, n.id_noticia DESC
     `);
 
     res.json(result.rows);
@@ -61,6 +64,7 @@ async function crearNoticia(req, res) {
     const categoriaId = Number(req.body.id_categoria_noticia);
     const missingFields = getMissingFields(req.body, [
       'titulo',
+      'subtitulo',
       'fecha',
       'contenido',
       'imagen_portada',
@@ -82,29 +86,29 @@ async function crearNoticia(req, res) {
 
     const noticia = {
       titulo: sanitizeText(req.body.titulo),
+      subtitulo: sanitizeText(req.body.subtitulo),
       fecha: sanitizeText(req.body.fecha),
       contenido: sanitizeText(req.body.contenido),
       imagen_portada: sanitizeText(req.body.imagen_portada),
-      facebook_reel_url: sanitizeText(req.body.facebook_reel_url || ''),
     };
 
     const result = await pool.query(
       `
         INSERT INTO noticia (
           titulo,
+          subtitulo,
           fecha,
           contenido,
           imagen_portada,
-          facebook_reel_url,
           id_categoria_noticia
         )
         VALUES ($1, $2, $3, $4, $5, $6)
         RETURNING
           id_noticia AS id,
           titulo,
+          subtitulo,
           fecha,
           contenido,
-          facebook_reel_url,
           imagen_portada,
           id_categoria_noticia,
           created_at,
@@ -112,10 +116,10 @@ async function crearNoticia(req, res) {
       `,
       [
         noticia.titulo,
+        noticia.subtitulo,
         noticia.fecha,
         noticia.contenido,
         noticia.imagen_portada,
-        noticia.facebook_reel_url,
         categoriaId,
       ]
     );
@@ -134,6 +138,7 @@ async function actualizarNoticia(req, res) {
     const categoriaId = Number(req.body.id_categoria_noticia);
     const missingFields = getMissingFields(req.body, [
       'titulo',
+      'subtitulo',
       'fecha',
       'contenido',
       'imagen_portada',
@@ -161,10 +166,10 @@ async function actualizarNoticia(req, res) {
 
     const noticia = {
       titulo: sanitizeText(req.body.titulo),
+      subtitulo: sanitizeText(req.body.subtitulo),
       fecha: sanitizeText(req.body.fecha),
       contenido: sanitizeText(req.body.contenido),
       imagen_portada: sanitizeText(req.body.imagen_portada),
-      facebook_reel_url: sanitizeText(req.body.facebook_reel_url || ''),
     };
 
     const result = await pool.query(
@@ -175,7 +180,7 @@ async function actualizarNoticia(req, res) {
           fecha = $2,
           contenido = $3,
           imagen_portada = $4,
-          facebook_reel_url = $5,
+          subtitulo = $5,
           id_categoria_noticia = $6
         WHERE id_noticia = $7
         RETURNING
@@ -183,7 +188,6 @@ async function actualizarNoticia(req, res) {
           titulo,
           fecha,
           contenido,
-          facebook_reel_url,
           imagen_portada,
           id_categoria_noticia,
           created_at,
@@ -194,7 +198,7 @@ async function actualizarNoticia(req, res) {
         noticia.fecha,
         noticia.contenido,
         noticia.imagen_portada,
-        noticia.facebook_reel_url,
+        noticia.subtitulo,
         categoriaId,
         id,
       ]
@@ -231,9 +235,9 @@ async function eliminarNoticia(req, res) {
         RETURNING
           id_noticia AS id,
           titulo,
+          subtitulo,
           fecha,
           contenido,
-          facebook_reel_url,
           imagen_portada,
           id_categoria_noticia,
           created_at,
