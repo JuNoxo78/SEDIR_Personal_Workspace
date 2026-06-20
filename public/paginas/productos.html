@@ -64,7 +64,7 @@
   <!-- END: Navigation Component -->
 
   <!-- BEGIN: Hero Section -->
-  <section class="relative overflow-hidden min-h-[220px] md:min-h-[260px] flex items-center"
+  <section class="relative overflow-hidden min-h-[300px] md:min-h-[260px] flex items-center"
     style="background: #006A49;">
     <div class="absolute inset-0 z-0">
       <img alt="Agricultural Background" class="w-full h-full object-cover opacity-20"
@@ -120,11 +120,12 @@
 
         <!-- Contenedor -->
         <div class="overflow-hidden">
-          <div id="alimentos-track" class="flex gap-8 transition-transform duration-500 ease-in-out">
+          <div id="alimentos-track" class="flex gap-8 transition-transform duration-500 ease-in-out"
+            style="touch-action: pan-y;">
 
             <!-- CARD 1: Miel de Abeja -->
             <div
-              class="flex-none w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
+              class="flex-none w-full md:w-[calc((100%-32px)/2)] lg:w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
               <div>
                 <img src="/activos/img_productos/miel_de_abeja.png" alt="Miel de Abeja"
                   class="w-full h-56 object-cover">
@@ -149,7 +150,7 @@
 
             <!-- CARD 2: Néctar de Frutas -->
             <div
-              class="flex-none w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
+              class="flex-none w-full md:w-[calc((100%-32px)/2)] lg:w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
               <div>
                 <img src="/activos/img_productos/nectar_de_frutas.png" alt="Néctar de Frutas"
                   class="w-full h-56 object-cover">
@@ -171,7 +172,7 @@
 
             <!-- CARD 3: Destilados y Licores -->
             <div
-              class="flex-none w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
+              class="flex-none w-full md:w-[calc((100%-32px)/2)] lg:w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
               <div>
                 <img src="/activos/img_productos/destilados_y_licores.png" alt="Destilados y Licores"
                   class="w-full h-56 object-cover">
@@ -197,7 +198,7 @@
 
             <!-- CARD 4: Café Especial -->
             <div
-              class="flex-none w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
+              class="flex-none w-full md:w-[calc((100%-32px)/2)] lg:w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
               <div>
                 <img src="/activos/img_productos/cafe_especial.png" alt="Café Especial"
                   class="w-full h-56 object-cover">
@@ -219,10 +220,9 @@
                 </a>
               </div>
             </div>
-            <!-- CARD 5: -->
             <!-- CARD 5: Mermeladas Artesanales -->
             <div
-              class="flex-none w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
+              class="flex-none w-full md:w-[calc((100%-32px)/2)] lg:w-[calc((100%-64px)/3)] bg-white rounded-[30px] border border-gray-100 shadow-sm overflow-hidden flex flex-col justify-between hover-card-effect group">
               <div>
                 <img src="/activos/img_productos/mermeladas_artesanales.png" alt="Mermeladas Artesanales"
                   class="w-full h-56 object-cover">
@@ -279,11 +279,15 @@
         const nextBtn = document.getElementById("alimentos-next");
         const dotsContainer = document.getElementById("alimentos-dots");
 
-        const visibleCards = 3;
+        function getVisibleCards() {
+          if (window.innerWidth < 768) return 1;
+          if (window.innerWidth < 1024) return 2;
+          return 3;
+        }
         const gap = 32;
 
         let currentIndex = 0;
-        let maxIndex = Math.max(0, cards.length - visibleCards);
+        let maxIndex = Math.max(0, cards.length - getVisibleCards());
 
         function createDots() {
           dotsContainer.innerHTML = "";
@@ -314,7 +318,15 @@
         function moveTo(index) {
           currentIndex = Math.max(0, Math.min(index, maxIndex));
 
-          const cardWidth = cards[0].offsetWidth + gap;
+          // Recalcular maxIndex y ancho según breakpoints actuales
+          maxIndex = Math.max(
+            0,
+            cards.length - getVisibleCards()
+          );
+
+          const cardWidth =
+            cards[0].getBoundingClientRect().width + gap;
+
 
           track.style.transform =
             `translateX(-${currentIndex * cardWidth}px)`;
@@ -328,10 +340,47 @@
         prevBtn.addEventListener("click", () => moveTo(currentIndex - 1));
         nextBtn.addEventListener("click", () => moveTo(currentIndex + 1));
 
-        window.addEventListener("resize", () => moveTo(currentIndex));
+        window.addEventListener("resize", () => {
+          maxIndex = Math.max(
+            0,
+            cards.length - getVisibleCards()
+          );
+
+          if (currentIndex > maxIndex) {
+            currentIndex = maxIndex;
+          }
+
+          createDots();
+          moveTo(currentIndex);
+        });
 
         createDots();
         moveTo(0);
+        let startX = 0;
+        let endX = 0;
+
+        track.addEventListener("touchstart", (e) => {
+          startX = e.touches[0].clientX;
+        });
+
+        track.addEventListener("touchmove", (e) => {
+          endX = e.touches[0].clientX;
+        });
+
+        track.addEventListener("touchend", () => {
+          const distance = startX - endX;
+
+          // sensibilidad mínima
+          if (Math.abs(distance) < 50) return;
+
+          if (distance > 0) {
+            // deslizó hacia la izquierda
+            moveTo(currentIndex + 1);
+          } else {
+            // deslizó hacia la derecha
+            moveTo(currentIndex - 1);
+          }
+        });
       });
     </script>
     <!-- ================= SECTION 2: LÍNEA NO ALIMENTOS E INSUMOS ================= -->

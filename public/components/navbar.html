@@ -2,8 +2,10 @@
 <nav class="navbar-shell bg-white shadow-sm">
   <div class="w-full px-[40px] flex justify-between items-center">
     <div class="flex items-center">
-      <img alt="SEDIR Logo" src="/activos/img_logos/logo-msi.png" class="navbar-logo" />
-    </div>
+    <a href="/index.html">
+        <img alt="SEDIR Logo" src="/activos/img_logos/logo-msi.png" class="navbar-logo">
+    </a>
+</div>
 
     <!-- Desktop Menu -->
     <div class="hidden md:flex items-center flex-nowrap gap-5">
@@ -68,7 +70,7 @@
         <span>▼</span>
       </button>
 
-      <div id="mobileSubmenu" class="hidden mt-2 pl-3 space-y-2">
+      <div id="mobileSubmenu" class="hidden mt-4 pl-3 space-y-4">
         <a href="../paginas/productos.html" class="navbar-link block">
           Productos
         </a>
@@ -82,32 +84,6 @@
       Contáctanos
     </a>
   </div>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  const menuBtn = document.getElementById("menu-btn");
-  const closeBtn = document.getElementById("close-menu");
-  const mobileMenu = document.getElementById("mobile-menu");
-  const overlay = document.getElementById("overlay");
-
-  menuBtn.addEventListener("click", () => {
-    mobileMenu.style.right = "0";
-    overlay.classList.remove("hidden");
-  });
-
-  closeBtn.addEventListener("click", () => {
-    mobileMenu.style.right = "-100%";
-    overlay.classList.add("hidden");
-  });
-
-  overlay.addEventListener("click", () => {
-    mobileMenu.style.right = "-100%";
-    overlay.classList.add("hidden");
-  });
-
-});
-</script>
 </div>
 
 <div id="overlay" class="fixed inset-0 bg-black/40 hidden z-[998] md:hidden"></div>

@@ -7,6 +7,7 @@ const contactoRoutes = require('./routes/contacto.routes');
 const noticiaRoutes = require('./routes/noticia.routes');
 const proyectoRoutes = require('./routes/proyecto.routes');
 const productoRoutes = require('./routes/producto.routes');
+const climaRoutes = require("./routes/clima.routes");
 const { notFoundHandler, errorHandler } = require('./middleware/errorHandler');
 const { apiRateLimiter, securityHeaders } = require('./middleware/security.middleware');
 
@@ -26,6 +27,7 @@ app.use('/api/contacto', contactoRoutes);
 app.use('/api/noticias', noticiaRoutes);
 app.use('/api/proyectos', proyectoRoutes);
 app.use('/api/productos', productoRoutes);
+app.use("/api/clima", climaRoutes);
 
 app.use(notFoundHandler);
 app.use(errorHandler);

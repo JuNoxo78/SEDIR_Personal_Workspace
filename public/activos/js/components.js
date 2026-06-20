@@ -46,6 +46,15 @@ async function loadComponentsFromDataAttributes() {
           console.error(error);
         }
 
+        // Ensure mobile menu handlers are bound after navbar HTML is injected
+        requestAnimationFrame(function () {
+          if (typeof window.initMenu === "function") {
+            window.initMenu();
+          } else if (typeof window.initNavbar === "function") {
+            window.initNavbar();
+          }
+        });
+
         return;
       }
 
