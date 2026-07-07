@@ -2,6 +2,9 @@
 <html lang="es">
 
 <head>
+  <title>.:: SEDIR ::.</title>
+  <link rel="icon" href="../activos/img_logos/logo-sedir-links.png" type="image/x-icon">
+
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Panel Administrativo - SEDIR</title>
@@ -221,16 +224,16 @@
     }
 
     function noticiaForm(model) {
-  const data = model || {
-    titulo: '',
-    subtitulo: '',
-    fecha: '',
-    contenido: '',
-    imagen_portada: '',
-    id_categoria_noticia: ''
-  };
+      const data = model || {
+        titulo: '',
+        subtitulo: '',
+        fecha: '',
+        contenido: '',
+        imagen_portada: '',
+        id_categoria_noticia: ''
+      };
 
-  return `
+      return `
     <input type="hidden" name="id" value="${escapeHtml(data.id || '')}" />
 
     <div>
@@ -334,12 +337,12 @@
       </button>
 
       ${model
-        ? '<button type="button" data-reset-form class="rounded-full px-5 py-3 font-semibold border border-slate-200">Cancelar</button>'
-        : ''
-      }
+          ? '<button type="button" data-reset-form class="rounded-full px-5 py-3 font-semibold border border-slate-200">Cancelar</button>'
+          : ''
+        }
     </div>
   `;
-}
+    }
 
     function proyectoForm(model) {
       const data = model || { nombre: '', descripcion: '', fecha_inicio: '', fecha_fin: '', estado: '', beneficiarios: '', imagen: '' };
