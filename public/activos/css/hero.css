@@ -1,22 +1,14 @@
-/* SECTION: Hero */
-.hero-bg {
-  position: relative;
-  background-color: #006a49;
-  overflow: hidden;
-}
-
-.hero-slideshow,
-.hero-bg-slideshow {
+/* SECTION: Hero Redesign */
+.hero-slideshow {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
-  border-radius: 1rem;
   overflow: hidden;
+  background-color: #006633;
 }
 
-.hero-slideshow img,
-.hero-bg-slideshow img {
+.hero-slideshow img {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -27,32 +19,17 @@
   animation: heroSlideShow 35s infinite;
 }
 
-.hero-bg-slideshow img:nth-of-type(1) {
-  animation-delay: 0s;
+@keyframes heroSlideShow {
+  0% { opacity: 0; }
+  4.16% { opacity: 1; }
+  29.16% { opacity: 1; }
+  33.33% { opacity: 0; }
+  100% { opacity: 0; }
 }
 
-.hero-bg-slideshow img:nth-of-type(2) {
-  animation-delay: 7s;
-}
-
-.hero-bg-slideshow img:nth-of-type(3) {
-  animation-delay: 14s;
-}
-
-.hero-bg-slideshow img:nth-of-type(4) {
-  animation-delay: 21s;
-}
-
-.hero-bg-slideshow img:nth-of-type(5) {
-  animation-delay: 28s;
-}
-
-.hero-bg-overlay {
-  position: absolute;
-  inset: 0;
-  z-index: 5;
-  background: linear-gradient(rgba(0, 106, 73, 0.55), rgba(0, 106, 73, 0.55));
-}
+.hero-slideshow img:nth-of-type(1) { animation-delay: 0s; }
+.hero-slideshow img:nth-of-type(2) { animation-delay: 11.66s; }
+.hero-slideshow img:nth-of-type(3) { animation-delay: 23.33s; }
 
 .carousel-card {
   position: relative;
@@ -75,22 +52,6 @@
   animation: carouselSlide 35s infinite;
 }
 
-.carousel-card img:nth-of-type(1) {
-  animation-delay: 0s;
-}
-
-.carousel-card img:nth-of-type(2) {
-  animation-delay: 7s;
-}
-
-.carousel-card img:nth-of-type(3) {
-  animation-delay: 14s;
-}
-
-.carousel-card img:nth-of-type(4) {
-  animation-delay: 21s;
-}
-
-.carousel-card img:nth-of-type(5) {
-  animation-delay: 28s;
-}
+.carousel-card img:nth-of-type(1) { animation-delay: 0s; }
+.carousel-card img:nth-of-type(2) { animation-delay: 11.66s; }
+.carousel-card img:nth-of-type(3) { animation-delay: 23.33s; }
